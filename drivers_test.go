@@ -193,10 +193,10 @@ func TestStructZeroValues(t *testing.T) {
 // (e.g. unexported method added).
 func TestInterfacesAssignable(t *testing.T) {
 	var (
-		hv  HypervisorDriver
-		nd  NetworkDriver
-		vd  VolumeDriver
-		id  ImageDriver
+		hv HypervisorDriver
+		nd NetworkDriver
+		vd VolumeDriver
+		id ImageDriver
 	)
 	if hv != nil || nd != nil || vd != nil || id != nil {
 		t.Error("expected zero-value interfaces to be nil")
