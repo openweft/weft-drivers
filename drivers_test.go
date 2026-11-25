@@ -13,6 +13,23 @@ func TestPackageCompiles(t *testing.T) {
 	// No-op: presence of this test ensures `go test ./...` runs.
 }
 
+func TestValidateBootToken(t *testing.T) {
+	if BootTokenLen != 32 {
+		t.Fatalf("BootTokenLen = %d", BootTokenLen)
+	}
+	if err := ValidateBootToken(make([]byte, BootTokenLen)); err != nil {
+		t.Fatalf("32 bytes rejected: %v", err)
+	}
+	for _, n := range []int{0, 1, 31, 33, 64} {
+		if err := ValidateBootToken(make([]byte, n)); !errors.Is(err, ErrInvalidBootToken) {
+			t.Errorf("len %d: err = %v", n, err)
+		}
+	}
+	if err := ValidateBootToken(nil); !errors.Is(err, ErrInvalidBootToken) {
+		t.Errorf("nil: err = %v", err)
+	}
+}
+
 // TestSentinelErrorsDistinct verifies the three sentinel errors
 // declared in errors.go are distinct values. errors.Is must
 // return false when comparing different sentinels, otherwise
